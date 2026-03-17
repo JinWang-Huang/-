@@ -20,6 +20,10 @@ optim.step()
 with torch.no_grad()只是不算梯度节省内存
 
 一般model.eavl()后还需训练要开启model.train()
+
+记住一句话：
+teacher_model.eval () = 保证权重不被改变
+with torch.no_grad () = 禁止计算梯度，省显存、提速
 ```
 
 ## with
