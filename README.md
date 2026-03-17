@@ -34,3 +34,20 @@ with torch.no_grad():
 在执行完xxx语句后会自动关闭，也就是关闭torch.no_grad()，开始计算梯度
 如果没有with则后续一直都是不计算梯度，或者是要自己手动打开
 ```
+
+## 冻结参数的模板
+```bash
+注意：要在进行loss计算反向传播前冻结
+# 冻结所有参数
+for param in model.parameters():
+    param.requires_grad = False
+# 解冻你想微调的层
+for param in model.layers[-2:].parameters():  # 解冻最后2层
+    param.requires_grad = True
+# 冻结原模型
+for param in model.parameters():
+    param.requires_grad = False
+
+# 添加 LoRA 模块（会自动设置 requires_grad=True）
+model = add_lora_to_model(model, rank=8)
+```
