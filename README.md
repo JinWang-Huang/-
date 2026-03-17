@@ -51,3 +51,47 @@ for param in model.parameters():
 # 添加 LoRA 模块（会自动设置 requires_grad=True）
 model = add_lora_to_model(model, rank=8)
 ```
+
+## 标准的读取json文件的数据转化成python字典的过程
+```bash
+假设json文件内容为
+{"text":"hello"}
+{"text":"hi"}
+{"text":"how are you"}
+
+这时候的操作为：
+with open("data_path",'r') as f:
+    lines = f.readlines()         #line是一个List，内容为["{"text":"hello"}","{"text":"hi"}"]
+                                  #这时候List里面的是字符串，不是字典，不是字典，不是字典！！！
+    for line in range(lines):     #依次取出"{"text":"hello"}"...。但是这个时候还是字符串！！！
+        data = json.loads(line)    #这时候变字典了 {"text":"hello"}
+        text=data['text']         #这个时候就真正读到了数据集了
+```
+## 写入内容到json文件
+```bash
+和读json文件的内容类似
+#data为要写入的数据
+data=[{"text":"hello"},{"text":"hi"},{"text":"how"},{"text":"are"}]
+
+old.json文件内容如下：
+{"conment":"你好","input":"hello"}
+{"conment":"你好","input":"hi"}
+{"conment":"你好","input":"how"}
+
+#下面这个方法为把一个json文件的有用数据提取出来放到另外一个json文件中
+with open("new.json",'a') as f1:
+    with open("old.json",'r') as f2:
+        lines = f2.readlines()
+        for line in lines:
+            chunks = split(json.loads(line))            #划分长度，返回列表
+            for chunk in chunks
+                f1.write(json.dumps({"text":chunk})+\n)
+
+#下面这个方法直接写内容
+datas=[{"text":"hello"},{"text":"hi"},{"text":"how"},{"text":"are"}]
+with open("new.json",'a') as f:
+   for data in datas:
+        chunks = split(data)                           #划分长度，返回列表
+        for chunk in chunks:
+            f.write(json.dumps(datas)+\n)
+```
