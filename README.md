@@ -1,4 +1,4 @@
-# -
+# 深度学习常见功能库
 主要基于pytroch库
 
 ### eval,train,no_grad
